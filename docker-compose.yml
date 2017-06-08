@@ -1,0 +1,43 @@
+version: "2"
+
+services:
+  syncthing:
+    container_name: syncthing
+    hostname: syncthing
+    image: qpeten/docker-syncthing
+    volumes:
+      - /mnt/btrfs/tank/:/mnt/tank:rw
+      - /home/quentin/.config/syncthing:/config:rw
+    network_mode: "host"
+    ports:
+      - "22000:22000"
+      - "8384:8384"
+      - "21027:21027/udp"
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "1m"
+        max-file: "1"
+    restart: always
+  
+  
+  couchpotato:
+    container_name: couchpotato
+    hostname: couchpotato
+    image: linuxserver/couchpotato
+    volumes:
+      - /home/quentin/couchpotato/config:/config
+      - /mnt/btrfs/tank/media/video/download:/downloads
+      - /mnt/btrfs/tank/media/video/movies:/movies
+    environment:
+      - PGID=1000
+      - PUID=1000
+      - TZ=Europe/Brussels
+    ports:
+      - "5050:5050"
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "1m"
+        max-file: "1"
+    restart: always
