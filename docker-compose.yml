@@ -41,3 +41,69 @@ services:
         max-size: "1m"
         max-file: "1"
     restart: always
+
+
+  transmission-quentin:
+    container_name: transmission-quentin
+    hostname: transmission-quentin
+    image: linuxserver/transmission
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /mnt/btrfs/tank/documents/quentin/tmp/download/.config:/config
+      - /mnt/btrfs/tank/documents/quentin/tmp/download:/downloads
+    environment:
+      - PGID=1000
+      - PUID=1000
+    ports:
+      - "9091:9091"
+      - "51016:51016"
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "1m"
+        max-file: "1"
+    restart: always
+
+
+  transmission-auto:
+    container_name: transmission-auto
+    hostname: transmission-auto
+    image: linuxserver/transmission
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /mnt/btrfs/tank/media/video/download/.config:/config
+      - /mnt/btrfs/tank/media/video/download/.dlfini:/downloads
+    environment:
+      - PGID=1000
+      - PUID=1000
+    ports:
+      - "9093:9091"
+      - "51414:51413"
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "1m"
+        max-file: "1"
+    restart: always
+
+
+  transmission-bruno:
+    container_name: transmission-bruno
+    hostname: transmission-bruno
+    image: linuxserver/transmission
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /mnt/btrfs/tank/documents/parents/Bruno/Transmission/.config:/config
+      - /mnt/btrfs/tank/documents/parents/Bruno/Transmission:/downloads
+    environment:
+      - PGID=1002
+      - PUID=1002
+    ports:
+      - "9092:9091"
+      - "51413:51413"
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "1m"
+        max-file: "1"
+    restart: always
