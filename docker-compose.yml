@@ -6,6 +6,7 @@ services:
     hostname: syncthing
     image: qpeten/docker-syncthing
     volumes:
+      - /etc/localtime:/etc/localtime:ro
       - /mnt/btrfs/tank/:/mnt/tank:rw
       - /home/quentin/.config/syncthing:/config:rw
     network_mode: "host"
@@ -26,9 +27,10 @@ services:
     hostname: couchpotato
     image: linuxserver/couchpotato
     volumes:
+      - /etc/localtime:/etc/localtime:ro
       - /home/quentin/couchpotato/config:/config
       - /mnt/btrfs/tank/media/video/download:/downloads
-      - /mnt/btrfs/tank/media/video/movies:/movies
+      - /mnt/btrfs/tank/media/video/movies:/movies:ro
     environment:
       - PGID=1000
       - PUID=1000
