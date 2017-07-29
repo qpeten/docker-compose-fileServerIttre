@@ -1,6 +1,38 @@
 version: "2"
 
 services:
+  fileServer-welcome:
+    container_name: fileServer-welcome
+    hostname: fileServer-welcome
+    image: qpeten/docker-fileserverwelcome
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+    ports:
+      - "80:80"
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "1m"
+        max-file: "1"
+    restart: always
+
+  domoticz:
+    container_name: domoticz
+    hostname: domoticz
+    image: qpeten/docker-domoticz
+    privileged: true
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /home/quentin/.config/domoticz:/config:rw
+    ports:
+      - "8080:8080"
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "1m"
+        max-file: "100"
+    restart: always
+
   syncthing:
     container_name: syncthing
     hostname: syncthing
