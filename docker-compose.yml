@@ -1,6 +1,15 @@
 version: "2"
 
 services:
+  dhcpd:
+    container_name: bind
+    hostname: bind
+    image: joebiellik/bind
+    network_mode: host
+    volumes:
+       - /etc/localtime:/etc/localtime:ro
+       - /home/quentin/.config/dhcpd.conf:/etc/dhcp/dhcpd.conf
+  
   fileServer-welcome:
     container_name: fileServer-welcome
     hostname: fileServer-welcome
