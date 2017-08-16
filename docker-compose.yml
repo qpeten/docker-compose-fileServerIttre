@@ -2,13 +2,20 @@ version: "2"
 
 services:
   dhcpd:
-    container_name: bind
-    hostname: bind
-    image: joebiellik/bind
+    container_name: dhcpd
+    hostname: dhcpd
+    image: sirferdek/isc-dhcp-server
     network_mode: host
     volumes:
        - /etc/localtime:/etc/localtime:ro
-       - /home/quentin/.config/dhcpd.conf:/etc/dhcp/dhcpd.conf
+       - /home/quentin/.config/dhcp/dhcpd.conf:/etc/dhcp/dhcpd.conf
+       - /home/quentin/.config/dhcp/lib:/var/lib/dhcp
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "1m"
+        max-file: "1"
+    restart: always
   
   fileServer-welcome:
     container_name: fileServer-welcome
