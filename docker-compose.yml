@@ -13,6 +13,7 @@ services:
       - /home/quentin/.config/movieSync-master/transmission/:/transmission-config
       - /etc/localtime:/etc/localtime:ro
       - /mnt/btrfs/tank/media/video/movies/:/movies:ro
+      - /mnt/btrfs/tank/media/video/torrents:/torrents
     logging:
       driver: "json-file"
       options:
