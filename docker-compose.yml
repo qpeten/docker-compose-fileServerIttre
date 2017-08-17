@@ -1,6 +1,24 @@
 version: "2"
 
 services:
+  movieSync-master:
+    container_name: movieSync-master
+    hostname: movieSync-master
+    build: ../movieSync-master
+    image: moviesync-master
+    ports:
+      - "51412:51412"
+      - "9094:9091"
+    volumes:
+      - /home/quentin/.config/movieSync-master/transmission/:/transmission-config
+      - /etc/localtime:/etc/localtime:ro
+      - /mnt/btrfs/tank/media/video/movies/:/movies:ro
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "1m"
+        max-file: "1"
+      
   dhcpd:
     container_name: dhcpd
     hostname: dhcpd
