@@ -4,16 +4,16 @@ services:
   movieSync-master:
     container_name: movieSync-master
     hostname: movieSync-master
-    build: ../movieSync-master
-    image: moviesync-master
+    image: qpeten/docker-moviesync-master
     ports:
       - "51412:51412"
       - "9094:9091"
     volumes:
       - /home/quentin/.config/movieSync-master/transmission/:/transmission-config
       - /etc/localtime:/etc/localtime:ro
-      - /mnt/btrfs/tank/media/video/movies/:/movies:ro
-      - /mnt/btrfs/tank/media/video/torrents:/torrents
+      - /mnt/vault/media/video/movies/:/movies:ro
+      - /mnt/vault/media/video/torrents:/torrents
+    restart: always
     logging:
       driver: "json-file"
       options:
@@ -74,7 +74,7 @@ services:
     image: qpeten/docker-syncthing
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - /mnt/btrfs/tank/:/mnt/tank:rw
+      - /mnt/vault/:/mnt/tank:rw
       - /home/quentin/.config/syncthing:/config:rw
     network_mode: "host"
     ports:
@@ -96,8 +96,8 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - /home/quentin/couchpotato/config:/config
-      - /mnt/btrfs/tank/media/video/download:/downloads
-      - /mnt/btrfs/tank/media/video/movies:/movies:ro
+      - /mnt/vault/media/video/download:/downloads
+      - /mnt/vault/media/video/movies:/movies:ro
     environment:
       - PGID=1000
       - PUID=1000
@@ -118,8 +118,8 @@ services:
     image: linuxserver/transmission
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - /mnt/btrfs/tank/documents/quentin/tmp/download/.config:/config
-      - /mnt/btrfs/tank/documents/quentin/tmp/download:/downloads
+      - /mnt/vault/documents/quentin/tmp/download/.config:/config
+      - /mnt/vault/documents/quentin/tmp/download:/downloads
     environment:
       - PGID=1000
       - PUID=1000
@@ -140,8 +140,8 @@ services:
     image: linuxserver/transmission
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - /mnt/btrfs/tank/media/video/download/.config:/config
-      - /mnt/btrfs/tank/media/video/download/.dlfini:/downloads
+      - /mnt/vault/media/video/download/.config:/config
+      - /mnt/vault/media/video/download/.dlfini:/downloads
     environment:
       - PGID=1000
       - PUID=1000
@@ -162,8 +162,8 @@ services:
     image: linuxserver/transmission
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - /mnt/btrfs/tank/documents/parents/Bruno/Transmission/.config:/config
-      - /mnt/btrfs/tank/documents/parents/Bruno/Transmission:/downloads
+      - /mnt/vault/documents/parents/Bruno/Transmission/.config:/config
+      - /mnt/vault/documents/parents/Bruno/Transmission:/downloads
     environment:
       - PGID=1002
       - PUID=1002
