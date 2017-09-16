@@ -1,12 +1,29 @@
 version: "2"
 
 services:
+  mosquitto:
+    container_name: mosquitto
+    hostname: mosquitto
+    image: qpeten/docker-mosquitto
+#    build: ../mosquitto
+    ports:
+      - "1883:1883"
+    volumes:
+      - /home/quentin/.config/mosquito:/config
+      - /etc/localtime:/etc/localtime:ro
+    restart: always
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "1m"
+        max-file: "1"
+
   movieSync-master:
     container_name: movieSync-master
     hostname: movieSync-master
     image: qpeten/docker-moviesync-master
     ports:
-      - "51412:51412"
+      - "51012:51012"
       - "9094:9091"
     volumes:
       - /home/quentin/.config/movieSync-master/transmission/:/transmission-config
