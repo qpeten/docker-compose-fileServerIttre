@@ -1,6 +1,33 @@
 version: "2"
 
 services:
+  openhab:
+    container_name: openhab
+    hostname: openhab
+    image: "openhab/openhab:2.1.0-amd64"
+    privileged: true
+    ports:
+      - "8081:8081" #Web interface
+    devices:
+      - "/dev/serial/by-id/usb-RFXCOM_RFXtrx433_A1R14P3-if00-port0"
+    volumes:
+      - "/etc/localtime:/etc/localtime:ro"
+      - "/etc/timezone:/etc/timezone:ro"
+      - "/home/quentin/.config/openhab/addons:/openhab/addons"
+      - "/home/quentin/.config/openhab/conf:/openhab/conf"
+      - "/home/quentin/.config/openhab/userdata:/openhab/userdata"
+    environment:
+      OPENHAB_HTTP_PORT: "8081"
+      OPENHAB_HTTPS_PORT: "8443"
+      USER_ID: "1000"
+      GROUP_ID: "1000"
+    restart: always
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "1m"
+        max-file: "1"
+
   mosquitto:
     container_name: mosquitto
     hostname: mosquitto
