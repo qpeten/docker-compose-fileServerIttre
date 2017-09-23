@@ -1,6 +1,24 @@
 version: "2"
 
 services:
+  nodered:
+    container_name: nodered
+    hostname: nodered
+    image: "nodered/node-red-docker"
+    user: "1000"
+    ports:
+      - "1880:1880"
+    volumes:
+      - "/home/quentin/.config/nodered/data:/data"
+      - "/etc/localtime:/etc/localtime:ro"
+      - "/etc/timezone:/etc/timezone:ro"
+    restart: always
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "1m"
+        max-file: "1"
+    
   openhab:
     container_name: openhab
     hostname: openhab
