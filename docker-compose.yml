@@ -1,6 +1,23 @@
 version: "2"
 
 services:
+  mysql:
+    container_name: mysql
+    hostname: mysql
+    image: "mysql/mysql-server"
+    ports:
+      - "3306:3306"
+    volumes:
+      - "/etc/localtime:/etc/localtime:ro"
+      - "/etc/timezone:/etc/timezone:ro"
+      - "/home/quentin/.config/mysql/datadir:/var/lib/mysql"
+    restart: always
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "1m"
+        max-file: "1"
+
   nodered:
     container_name: nodered
     hostname: nodered
