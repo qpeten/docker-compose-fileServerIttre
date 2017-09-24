@@ -1,6 +1,43 @@
 version: "2"
 
 services:
+  influxdb:
+    container_name: influxdb
+    hostname: influxdb
+    image: influxdb
+#    user: "1000"
+    ports:
+      - "8078:8078"
+    volumes:
+      - "/home/quentin/.config/influxdb/conf:/etc/influxdb"
+      - "/home/quentin/.config/influxdb/db:/var/lib/influxdb"
+      - "/etc/localtime:/etc/localtime:ro"
+      - "/etc/timezone:/etc/timezone:ro"
+    restart: always
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "1m"
+        max-file: "1"
+
+  grafana:
+    container_name: grafana
+    hostname: grafana
+    image: "grafana/grafana"
+    ports:
+      - "3000:3000"
+    volumes:
+      - "/home/quentin/.config/grafana/conf:/etc/grafana"
+      - "/home/quentin/.config/grafana/db:/var/lib/grafana"
+      - "/etc/localtime:/etc/localtime:ro"
+      - "/etc/timezone:/etc/timezone:ro"
+    restart: always
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "1m"
+        max-file: "1"
+
   nginx:
     container_name: nginx
     hostname: nginx
