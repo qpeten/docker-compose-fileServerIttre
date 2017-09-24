@@ -1,6 +1,23 @@
 version: "2"
 
 services:
+  nginx:
+    container_name: nginx
+    hostname: nginx
+    image: nginx
+    ports:
+      - "21098:21098"
+    volumes:
+      - "/home/quentin/.config/nginx/conf:/etc/nginx"
+      - "/etc/localtime:/etc/localtime:ro"
+      - "/etc/timezone:/etc/timezone:ro"
+    restart: always
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "1m"
+        max-file: "1"
+    
   mysql:
     container_name: mysql
     hostname: mysql
