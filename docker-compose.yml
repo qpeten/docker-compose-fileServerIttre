@@ -201,27 +201,6 @@ services:
         max-file: "100"
     restart: always
 
-  syncthing:
-    container_name: syncthing
-    hostname: syncthing
-    image: qpeten/docker-syncthing
-    volumes:
-      - /etc/localtime:/etc/localtime:ro
-      - /mnt/vault/:/mnt/tank:rw
-      - /home/quentin/.config/syncthing:/config:rw
-    network_mode: "host"
-    ports:
-      - "22000:22000"
-      - "8384:8384"
-      - "21027:21027/udp"
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "1m"
-        max-file: "1"
-    restart: always
-  
-  
   couchpotato:
     container_name: couchpotato
     hostname: couchpotato
