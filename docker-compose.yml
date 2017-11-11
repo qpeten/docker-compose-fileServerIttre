@@ -46,6 +46,7 @@ services:
       - "21098:21098"
     volumes:
       - "/home/quentin/.config/nginx/conf:/etc/nginx"
+      - "/var/log/nginx/:/var/log/nginx/"
       - "/etc/localtime:/etc/localtime:ro"
       - "/etc/timezone:/etc/timezone:ro"
     restart: always
