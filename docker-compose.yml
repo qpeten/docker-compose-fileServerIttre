@@ -1,6 +1,28 @@
 version: "2"
 
 services:
+  openvpn:
+    container_name: openvpn
+    hostname: openvpn
+    image: linuxserver/openvpn-as
+    network_mode: host
+    volumes:
+      - "/home/quentin/.config/openvpn:/config"
+      - "/etc/localtime:/etc/localtime:ro"
+      - "/etc/timezone:/etc/timezone:ro"
+    restart: always
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "1m"
+        max-file: "1"
+    environment:
+      - PGID=1000
+      - PUID=1000
+      - INTERFACE=enp1s0
+    privileged: true
+
+
   influxdb:
     container_name: influxdb
     hostname: influxdb
