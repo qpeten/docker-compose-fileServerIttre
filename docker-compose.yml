@@ -1,6 +1,24 @@
 version: "2"
 
 services:
+  handbrake:
+    container_name: handbrake 
+    hostname: handbrake
+    image: coppit/handbrake
+    ports:
+      - "8079:8080"
+    cap_add:
+      - SYS_NICE
+    volumes:
+      - "/home/quentin/.config/handbrake:/config"
+      - "/mnt/vault/media/video/:/media"
+    restart: always
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "1m"
+        max-file: "1"
+
   openvpn:
     container_name: openvpn
     hostname: openvpn
@@ -190,27 +208,27 @@ services:
         max-file: "1"
     restart: always
 
-  couchpotato:
-    container_name: couchpotato
-    hostname: couchpotato
-    image: linuxserver/couchpotato
-    volumes:
-      - /etc/localtime:/etc/localtime:ro
-      - /home/quentin/couchpotato/config:/config
-      - /mnt/vault/media/video/download:/downloads
-      - /mnt/vault/media/video/movies:/movies:ro
-    environment:
-      - PGID=1000
-      - PUID=1000
-      - TZ=Europe/Brussels
-    ports:
-      - "5050:5050"
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "1m"
-        max-file: "1"
-    restart: always
+#  couchpotato:
+#    container_name: couchpotato
+#    hostname: couchpotato
+#    image: linuxserver/couchpotato
+#    volumes:
+#      - /etc/localtime:/etc/localtime:ro
+#      - /home/quentin/couchpotato/config:/config
+#      - /mnt/vault/media/video/download:/downloads
+#      - /mnt/vault/media/video/movies:/movies:ro
+#    environment:
+#      - PGID=1000
+#      - PUID=1000
+#      - TZ=Europe/Brussels
+#    ports:
+#      - "5050:5050"
+#    logging:
+#      driver: "json-file"
+#      options:
+#        max-size: "1m"
+#        max-file: "1"
+#    restart: always
 
 
   transmission-quentin:
