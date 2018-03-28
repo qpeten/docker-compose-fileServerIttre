@@ -19,24 +19,24 @@ services:
         max-size: "1m"
         max-file: "1"
 
-  openvpn:
-    container_name: openvpn
-    hostname: openvpn
-    image: kylemanna/openvpn
-    ports:
-      - "53:1194/udp"
-    cap_add:
-      - NET_ADMIN
-    volumes:
-      - "/home/quentin/.config/openvpn:/etc/openvpn"
-      - "/etc/localtime:/etc/localtime:ro"
-      - "/etc/timezone:/etc/timezone:ro"
-    restart: always
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "1m"
-        max-file: "1"
+#  openvpn:
+#    container_name: openvpn
+#    hostname: openvpn
+#    image: kylemanna/openvpn
+#    ports:
+#      - "53:1194/udp"
+#    cap_add:
+#      - NET_ADMIN
+#    volumes:
+#      - "/home/quentin/.config/openvpn:/etc/openvpn"
+#      - "/etc/localtime:/etc/localtime:ro"
+#      - "/etc/timezone:/etc/timezone:ro"
+#    restart: always
+#    logging:
+#      driver: "json-file"
+#      options:
+#        max-size: "1m"
+#        max-file: "1"
 
 
   influxdb:
@@ -177,21 +177,21 @@ services:
         max-size: "1m"
         max-file: "1"
       
-  dhcpd:
-    container_name: dhcpd
-    hostname: dhcpd
-    image: sirferdek/isc-dhcp-server
-    network_mode: host
-    volumes:
-       - /etc/localtime:/etc/localtime:ro
-       - /home/quentin/.config/dhcp/dhcpd.conf:/etc/dhcp/dhcpd.conf
-       - /home/quentin/.config/dhcp/lib:/var/lib/dhcp
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "1m"
-        max-file: "1"
-    restart: always
+#  dhcpd:
+#    container_name: dhcpd
+#    hostname: dhcpd
+#    image: sirferdek/isc-dhcp-server
+#    network_mode: host
+#    volumes:
+#       - /etc/localtime:/etc/localtime:ro
+#       - /home/quentin/.config/dhcp/dhcpd.conf:/etc/dhcp/dhcpd.conf
+#       - /home/quentin/.config/dhcp/lib:/var/lib/dhcp
+#    logging:
+#      driver: "json-file"
+#      options:
+#       max-size: "1m"
+#        max-file: "1"
+#    restart: always
   
   fileServer-welcome:
     container_name: fileServer-welcome
