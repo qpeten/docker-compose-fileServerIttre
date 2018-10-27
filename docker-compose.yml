@@ -1,17 +1,56 @@
-version: "2"
+version: '2.2'
 
 services:
-  handbrake:
-    container_name: handbrake 
-    hostname: handbrake
-    image: coppit/handbrake
-    ports:
-      - "8079:8080"
-    cap_add:
-      - SYS_NICE
+    #  dhcpd:
+    #    container_name: dhcpd
+    #    hostname: dhcpd
+#    image: sirferdek/isc-dhcp-server
+#    network_mode: host
+#    volumes:
+#       - /etc/localtime:/etc/localtime:ro
+#       - /home/quentin/.config/dhcp/dhcpd.conf:/etc/dhcp/dhcpd.conf
+#       - /home/quentin/.config/dhcp/lib:/var/lib/dhcp
+#    logging:
+#      driver: "json-file"
+#      options:
+#        max-size: "1m"
+#        max-file: "1"
+#    restart: always
+  
+  plex:
+    container_name: plex
+    hostname: plex
+    image: plexinc/pms-docker
+    restart: unless-stopped
+    environment:
+      - TZ=Europe/Brussels
+      - PLEX_UID=1000
+      - PLEx_GID=1000
+      - PLEX_CLAIM=claim-D49DBgKryxqyC1asB7te
+    network_mode: host
     volumes:
-      - "/home/quentin/.config/handbrake:/config"
-      - "/mnt/vault/media/video/:/media"
+      - /home/quentin/.config/plex/config:/config
+      - /home/quentin/.config/plex/temp:/transcode
+      - /mnt/vault/media/video/movies:/data
+  syncthing:
+    container_name: syncthing
+    hostname: syncthing
+    image: linuxserver/syncthing
+    ports:
+      - "8384:8384"
+      - "22000:22000"
+      - "21027:21027/udp"
+    volumes:
+      - "/etc/localtime:/etc/localtime:ro"
+      - "/etc/timezone:/etc/timezone:ro"
+      - "/home/quentin/.config/syncthing:/config"
+      - "/mnt/vault/media/video/movies:/mnt/movies"
+      - "/mnt/vault/documents/quentin/syncthing/home:/mnt/mbp13-quentin/home"
+      - "/mnt/vault/documents/quentin/syncthing/fcpxdata:/mnt/mbp13-quentin/fcpxdata"
+    environment:
+        - "UMASK_SET=<022>"
+        - "PGID=1000"
+        - "PUID=1000"
     restart: always
     logging:
       driver: "json-file"
@@ -19,6 +58,76 @@ services:
         max-size: "1m"
         max-file: "1"
 
+    #  dnsmasq:
+    #container_name: dnsmasq
+    #hostname: dnsmasq
+    #image: andyshinn/dnsmasq
+    #command: ["--port=0",
+    #          "--dhcp-range=192.168.1.255,proxy",
+    #          "--log-dhcp",
+    #          "--enable-tftp",
+    #          "--tftp-root=/tftproot",
+    #          '--pxe-service=0,"Raspberry Pi Boot"']
+    #volumes:
+    #  - "/etc/localtime:/etc/localtime:ro"
+    #  - "/etc/timezone:/etc/timezone:ro"
+    #  - "/home/quentin/.config/tftproot:/tftproot"
+    #network_mode: "host"
+    #ports:
+    #  - "53:53/tcp"
+    #  - "53:53/udp"
+    #init: true
+    #restart: always
+    #logging:
+    #  driver: "json-file"
+    #  options:
+    #    max-size: "1m"
+    #    max-file: "1"
+  
+  unifi:
+    container_name: unifi
+    hostname: unifi
+    image: jacobalberty/unifi:stable
+    volumes:
+      - "/etc/localtime:/etc/localtime:ro"
+      - "/etc/timezone:/etc/timezone:ro"
+      - "/home/quentin/.config/unifi:/unifi"
+    environment:
+#        - BIND_PRIV=false
+        - RUNAS_UID0=false
+        - UNIFI_UID=1000
+        - UNIFI_GID=1000
+#   network_mode: "host"
+    ports:
+      - "8080:8080"
+      - "8443:8443"
+      - "3478:3478/udp"
+      - "10001:10001/udp"
+    init: true
+    restart: always
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "1m"
+        max-file: "1"
+
+  nodered-dev:
+    container_name: nodered-dev
+    hostname: nodered-dev
+    image: "nodered/node-red-docker"
+    user: "1000"
+    ports:
+      - "1881:1880"
+    volumes:
+      - "/home/quentin/tmp/nodered/data:/data"
+      - "/etc/localtime:/etc/localtime:ro"
+      - "/etc/timezone:/etc/timezone:ro"
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "1m"
+        max-file: "1"
+    
 #  openvpn:
 #    container_name: openvpn
 #    hostname: openvpn
@@ -121,8 +230,6 @@ services:
     privileged: true
     ports:
       - "8081:8081" #Web interface
-    devices:
-      - "/dev/serial/by-id/usb-RFXCOM_RFXtrx433_A1R14P3-if00-port0"
     volumes:
       - "/etc/localtime:/etc/localtime:ro"
       - "/etc/timezone:/etc/timezone:ro"
@@ -177,22 +284,6 @@ services:
         max-size: "1m"
         max-file: "1"
       
-#  dhcpd:
-#    container_name: dhcpd
-#    hostname: dhcpd
-#    image: sirferdek/isc-dhcp-server
-#    network_mode: host
-#    volumes:
-#       - /etc/localtime:/etc/localtime:ro
-#       - /home/quentin/.config/dhcp/dhcpd.conf:/etc/dhcp/dhcpd.conf
-#       - /home/quentin/.config/dhcp/lib:/var/lib/dhcp
-#    logging:
-#      driver: "json-file"
-#      options:
-#       max-size: "1m"
-#        max-file: "1"
-#    restart: always
-  
   fileServer-welcome:
     container_name: fileServer-welcome
     hostname: fileServer-welcome
